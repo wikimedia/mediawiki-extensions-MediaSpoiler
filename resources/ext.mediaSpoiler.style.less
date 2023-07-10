@@ -1,0 +1,92 @@
+@media screen {
+	figure {
+		&.spoiler[typeof~='mw:File/Thumb'],
+		&.spoiler[typeof~='mw:File/Frame'] {
+			position: relative;
+
+			& > a:first-child {
+				display: block;
+				overflow: hidden;
+
+				img {
+					filter: blur(20px) grayscale(100%);
+				}
+			}
+
+			& > span:first-child {
+				display: block;
+				overflow: hidden;
+
+				video {
+					filter: blur(20px) grayscale(100%);
+
+					&::-webkit-media-controls-panel {
+						display: none;
+					}
+				}
+
+				.mw-tmh-play {
+					display: none;
+				}
+
+				.mw-tmh-label {
+					cursor: default;
+				}
+			}
+
+			& > .spoiler-cover {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+
+				& > .spoiler-button {
+					position: absolute;
+					top: 50%;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					margin: auto;
+					text-align: center;
+					margin-top: ~'calc( -1 * ( 12px + 1.42857143em ) )';
+				}
+			}
+
+			& > figcaption {
+				position: relative;
+				z-index: 1;
+			}
+		}
+
+		&.nospoiler[typeof~='mw:File/Thumb'],
+		&.nospoiler[typeof~='mw:File/Frame'] {
+			& > a:first-child img,
+			& > span:first-child video {
+				filter: none;
+				transition: 0.3s;
+			}
+
+			& > span:first-child {
+				.mw-tmh-play {
+					display: unset;
+				}
+
+				.mw-tmh-label {
+					cursor: pointer;
+				}
+			}
+
+			& > .spoiler-cover {
+				display: none;
+			}
+		}
+	}
+}
+
+@media print {
+	.spoiler-cover {
+		display: none;
+	}
+}

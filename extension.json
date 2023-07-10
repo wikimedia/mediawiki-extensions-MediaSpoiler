@@ -1,0 +1,71 @@
+{
+	"name": "MediaSpoiler",
+	"version": "0.1.0",
+	"author": [
+		"[https://www.mediawiki.org/wiki/User:沈澄心 沈澄心]"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:MediaSpoiler",
+	"descriptionmsg": "mediaspoiler-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "parserhook",
+	"requires": {
+		"MediaWiki": ">= 1.41.0"
+	},
+	"MessagesDirs": {
+		"MediaSpoiler": [
+			"i18n"
+		]
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\MediaSpoiler\\": "includes/"
+	},
+	"HookHandlers": {
+        "main": {
+            "class": "MediaWiki\\Extension\\MediaSpoiler\\Hooks",
+			"services": [
+				"UserOptionsLookup"
+			]
+        }
+    },
+	"Hooks": {
+		"ParserMakeImageParams": "main",
+		"ParserModifyImageHTML": "main",
+		"ParserOptionsRegister": "main",
+		"UserGetDefaultOptions": "main",
+		"GetPreferences": "main"
+	},
+	"ResourceModules": {
+		"ext.mediaSpoiler": {
+			"dependencies": [
+				"oojs-ui-core"
+			],
+			"scripts": [
+				"resources/ext.mediaSpoiler.js"
+			]
+		},
+		"ext.mediaSpoiler.style": {
+			"styles": [
+				"resources/ext.mediaSpoiler.style.less"
+			]
+		},
+		"ext.mediaSpoiler.noimg.style": {
+			"styles": [
+				"resources/ext.mediaSpoiler.noimg.style.less"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "MediaSpoiler"
+	},
+	"config": {
+		"MediaSpoilerEnableMark": {
+			"value": true,
+			"description": "Allow editors to mark sensitive media"
+		}
+	},
+	"ConfigRegistry": {
+		"MediaSpoiler": "GlobalVarConfig::newInstance"
+	},
+	"manifest_version": 2
+}

@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"沈澄心"
+		]
+	},
+	"mediaspoiler-desc": "Hide media which may make readers uncomfortable",
+	"mediaspoiler-viewmedia": "View media",
+	"mediaspoiler-pref-label": "Media display",
+	"mediaspoiler-pref-help": "This option only affects framed media. Other media are not affected.",
+	"mediaspoiler-pref-hidemarked": "Hide media marked as sensitive",
+	"mediaspoiler-pref-showall": "Show all media",
+	"mediaspoiler-pref-hideall": "Hide all media",
+	"mediaspoiler-pref-notload": "Don't load media, show links to media description pages only"
+}
