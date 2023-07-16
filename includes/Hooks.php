@@ -191,7 +191,7 @@ class Hooks implements
 
 				$button = new \OOUI\ButtonWidget( [
 					'infusable' => true,
-					'label' => wfMessage( 'mediaspoiler-viewmedia' )->text(),
+					'label' => $parser->msg( 'mediaspoiler-viewmedia' )->text(),
 					'href' => $file->getDescriptionUrl(),
 					'icon' => 'eye',
 					'flags' => [ 'primary', 'progressive' ],
