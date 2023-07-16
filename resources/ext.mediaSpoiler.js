@@ -1,4 +1,4 @@
-( function ( $, mw ) {
+( function () {
 	var nospoiler = function ( elem ) {
 		var button = OO.ui.ButtonWidget.static.infuse( elem );
 		var $figure = button.$element.parents( 'figure' );
@@ -11,8 +11,9 @@
 		} );
 	};
 
+	// eslint-disable-next-line no-jquery/no-global-selector
 	var $buttons = $( '.spoiler-button' );
-	for ( i = 0; i < $buttons.length; i++ ) {
-		nospoiler( $buttons[i] );
+	for ( var i = 0; i < $buttons.length; i++ ) {
+		nospoiler( $buttons[ i ] );
 	}
-}( jQuery, mediaWiki ) );
+}() );

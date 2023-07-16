@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\MediaSpoiler;
 
 use File;
 use MediaWiki\Hook\ParserMakeImageParamsHook;
-use MediaWiki\Hook\ParserModifyImageHTML; //MW < 1.41
+use MediaWiki\Hook\ParserModifyImageHTMLHook;
 use MediaWiki\Hook\ParserOptionsRegisterHook;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
@@ -12,7 +12,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\User\Hook\UserGetDefaultOptionsHook;
 use MediaWiki\User\UserOptionsLookup;
-use OOUI\ButtonWidget;
 use OutputPage;
 use Parser;
 use ParserOptions;
@@ -23,7 +22,7 @@ use Wikimedia\RemexHtml\TreeBuilder\TreeBuilder;
 
 class Hooks implements
 	ParserMakeImageParamsHook,
-	ParserModifyImageHTML,
+	ParserModifyImageHTMLHook,
 	ParserOptionsRegisterHook,
 	UserGetDefaultOptionsHook,
 	GetPreferencesHook
@@ -52,6 +51,9 @@ class Hooks implements
 	/** @var string show links to media description pages only */
 	private const MODE_NOTLOAD = 'notload';
 
+	/**
+	 * @param UserOptionsLookup $userOptionsLookup
+	 */
 	public function __construct( UserOptionsLookup $userOptionsLookup ) {
 		$this->userOptionsLookup = $userOptionsLookup;
 		$services = MediaWikiServices::getInstance();
@@ -71,6 +73,10 @@ class Hooks implements
 		];
 	}
 
+	/**
+	 * @param string $html
+	 * @return DOMNode
+	 */
 	private function getDOMDoc( string $html ) {
 		$domBuilder = new DOMBuilder();
 		$treeBuilder = new TreeBuilder( $domBuilder );
@@ -81,6 +87,13 @@ class Hooks implements
 		return $domBuilder->getFragment();
 	}
 
+	/**
+	 * @param Title $title
+	 * @param File $file
+	 * @param array &$params
+	 * @param Parser $parser
+	 * @return void
+	 */
 	public function onParserMakeImageParams( $title, $file, &$params, $parser ) {
 		if ( !$this->enableMark ) {
 			return;
@@ -93,17 +106,22 @@ class Hooks implements
 				$params['frame']['class'] .= ' notpageimage';
 			}
 		}
-
-		return;
 	}
 
+	/**
+	 * @param Parser $parser
+	 * @param File $file
+	 * @param array $params
+	 * @param string &$html
+	 * @return void
+	 */
 	public function onParserModifyImageHTML( Parser $parser, File $file,
 		array $params, string &$html ): void {
 		$mode = $parser->getOptions()->getOption( 'mediaspoiler' );
 		$doc = $this->getDOMDoc( $html );
 
 		if ( $this->enableLegacyMediaDOM ) {
-			//TODO: legacy media DOM support
+			// TODO: legacy media DOM support
 		} else {
 			$figure = $doc->getElementsByTagName( 'figure' )->item( 0 );
 			if ( !$figure ) {
@@ -133,7 +151,7 @@ class Hooks implements
 				$parser->getOutput()->addModuleStyles( [ 'ext.mediaSpoiler.noimg.style' ] );
 				return;
 			} elseif ( $this->enableMark && in_array( 'spoiler', $classes ) && $mode === self::MODE_SHOWALL ) {
-				// nothing to do with audio files
+				// skip for audio files
 				if ( !$figure->firstElementChild->firstElementChild->hasAttribute( 'height' ) ) {
 					return;
 				}
@@ -144,7 +162,7 @@ class Hooks implements
 			} elseif ( ( $this->enableMark && in_array( 'spoiler', $classes ) ) || $mode === self::MODE_HIDEALL ) {
 				$a = $figure->firstElementChild;
 
-				// nothing to do with audio files
+				// skip for audio files
 				if ( !$a->firstElementChild->hasAttribute( 'height' ) ) {
 					return;
 				}
@@ -180,16 +198,25 @@ class Hooks implements
 					'classes' => [ 'spoiler-button' ],
 				] );
 
-				$coverElement = $doc->importNode( $this->getDOMDoc( '<div class="spoiler-cover">' . $button->toString() . '</div>' )->getElementsByTagName( 'div' )->item(0), true );
-				$buttonElement = $coverElement->getElementsByTagName( 'span' )->item(0);
+				$coverElement = $doc->importNode(
+					$this->getDOMDoc( '<div class="spoiler-cover">' . $button->toString() . '</div>' )
+						->getElementsByTagName( 'div' )->item( 0 ),
+					true
+				);
+				$buttonElement = $coverElement->getElementsByTagName( 'span' )->item( 0 );
 				$figure->appendChild( $coverElement );
 
 				$html = $doc->saveHTML( $figure );
-				return;
 			}
 		}
 	}
 
+	/**
+	 * @param array &$defaults
+	 * @param array &$inCacheKey
+	 * @param array &$lazyLoad
+	 * @return void
+	 */
 	public function onParserOptionsRegister( &$defaults, &$inCacheKey, &$lazyLoad ) {
 		$defaults['mediaspoiler'] = $this->userOptionsLookup->getDefaultOption( 'mediaspoiler' );
 		$inCacheKey['mediaspoiler'] = true;
@@ -202,6 +229,10 @@ class Hooks implements
 		};
 	}
 
+	/**
+	 * @param array &$defaultOptions
+	 * @return void
+	 */
 	public function onUserGetDefaultOptions( &$defaultOptions ) {
 		$mode = $defaultOptions['mediaspoiler'] ?? '';
 		if ( in_array( $mode, $this->options, true ) ) {
@@ -218,6 +249,11 @@ class Hooks implements
 		$defaultOptions['mediaspoiler'] = $this->enableMark ? self::MODE_HIDEMARKED : self::MODE_SHOWALL;
 	}
 
+	/**
+	 * @param User $user
+	 * @param array &$preferences
+	 * @return void
+	 */
 	public function onGetPreferences( $user, &$preferences ) {
 		$preferences['mediaspoiler'] = [
 			'type' => 'select',

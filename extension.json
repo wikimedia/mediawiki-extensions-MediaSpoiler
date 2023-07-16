@@ -20,13 +20,13 @@
 		"MediaWiki\\Extension\\MediaSpoiler\\": "includes/"
 	},
 	"HookHandlers": {
-        "main": {
-            "class": "MediaWiki\\Extension\\MediaSpoiler\\Hooks",
+		"main": {
+			"class": "MediaWiki\\Extension\\MediaSpoiler\\Hooks",
 			"services": [
 				"UserOptionsLookup"
 			]
-        }
-    },
+		}
+	},
 	"Hooks": {
 		"ParserMakeImageParams": "main",
 		"ParserModifyImageHTML": "main",
