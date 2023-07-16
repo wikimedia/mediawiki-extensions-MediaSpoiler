@@ -15,10 +15,7 @@ use MediaWiki\User\UserOptionsLookup;
 use OutputPage;
 use Parser;
 use ParserOptions;
-use Wikimedia\RemexHtml\DOM\DOMBuilder;
-use Wikimedia\RemexHtml\Tokenizer\Tokenizer;
-use Wikimedia\RemexHtml\TreeBuilder\Dispatcher;
-use Wikimedia\RemexHtml\TreeBuilder\TreeBuilder;
+use Wikimedia\Parsoid\Utils\DOMUtils;
 
 class Hooks implements
 	ParserMakeImageParamsHook,
@@ -74,20 +71,6 @@ class Hooks implements
 	}
 
 	/**
-	 * @param string $html
-	 * @return DOMNode
-	 */
-	private function getDOMDoc( string $html ) {
-		$domBuilder = new DOMBuilder();
-		$treeBuilder = new TreeBuilder( $domBuilder );
-		$dispatcher = new Dispatcher( $treeBuilder );
-		$tokenizer = new Tokenizer( $dispatcher, $html );
-		$tokenizer->execute();
-
-		return $domBuilder->getFragment();
-	}
-
-	/**
 	 * @param Title $title
 	 * @param File $file
 	 * @param array &$params
@@ -118,7 +101,7 @@ class Hooks implements
 	public function onParserModifyImageHTML( Parser $parser, File $file,
 		array $params, string &$html ): void {
 		$mode = $parser->getOptions()->getOption( 'mediaspoiler' );
-		$doc = $this->getDOMDoc( $html );
+		$doc = DOMUtils::parseHTML( $html );
 
 		if ( $this->enableLegacyMediaDOM ) {
 			// TODO: legacy media DOM support
@@ -199,7 +182,7 @@ class Hooks implements
 				] );
 
 				$coverElement = $doc->importNode(
-					$this->getDOMDoc( '<div class="spoiler-cover">' . $button->toString() . '</div>' )
+					DOMUtils::parseHTML( '<div class="spoiler-cover">' . $button->toString() . '</div>' )
 						->getElementsByTagName( 'div' )->item( 0 ),
 					true
 				);
