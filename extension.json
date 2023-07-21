@@ -30,6 +30,7 @@
 	"Hooks": {
 		"ParserMakeImageParams": "main",
 		"ParserModifyImageHTML": "main",
+		"OutputPageBeforeHTML": "main",
 		"ParserOptionsRegister": "main",
 		"UserGetDefaultOptions": "main",
 		"GetPreferences": "main"
@@ -46,11 +47,6 @@
 		"ext.mediaSpoiler.style": {
 			"styles": [
 				"resources/ext.mediaSpoiler.style.less"
-			]
-		},
-		"ext.mediaSpoiler.noimg.style": {
-			"styles": [
-				"resources/ext.mediaSpoiler.noimg.style.less"
 			]
 		}
 	},

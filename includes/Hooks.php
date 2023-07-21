@@ -2,33 +2,37 @@
 
 namespace MediaWiki\Extension\MediaSpoiler;
 
+use ConfigException;
 use File;
+use MediaWiki\Hook\OutputPageBeforeHTMLHook;
 use MediaWiki\Hook\ParserMakeImageParamsHook;
 use MediaWiki\Hook\ParserModifyImageHTMLHook;
 use MediaWiki\Hook\ParserOptionsRegisterHook;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
+use MediaWiki\Title\Title;
 use MediaWiki\User\Hook\UserGetDefaultOptionsHook;
 use MediaWiki\User\UserOptionsLookup;
 use OutputPage;
 use Parser;
 use ParserOptions;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 
 class Hooks implements
 	ParserMakeImageParamsHook,
 	ParserModifyImageHTMLHook,
+	OutputPageBeforeHTMLHook,
 	ParserOptionsRegisterHook,
 	UserGetDefaultOptionsHook,
 	GetPreferencesHook
 {
 	/** @var UserOptionsLookup */
 	private $userOptionsLookup;
-
-	/** @var bool */
-	private $enableLegacyMediaDOM;
 
 	/** @var bool */
 	private $enableMark;
@@ -46,17 +50,14 @@ class Hooks implements
 	private const MODE_HIDEALL = 'hideall';
 
 	/** @var string show links to media description pages only */
-	private const MODE_NOTLOAD = 'notload';
+	private const MODE_NOIMG = 'noimg';
 
 	/**
 	 * @param UserOptionsLookup $userOptionsLookup
 	 */
 	public function __construct( UserOptionsLookup $userOptionsLookup ) {
 		$this->userOptionsLookup = $userOptionsLookup;
-		$services = MediaWikiServices::getInstance();
-		$mainConfig = $services->getMainConfig();
-		$config = $services->getConfigFactory()->makeConfig( 'MediaSpoiler' );
-		$this->enableLegacyMediaDOM = $mainConfig->get( MainConfigNames::ParserEnableLegacyMediaDOM );
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'MediaSpoiler' );
 		$this->enableMark = $config->get( 'MediaSpoilerEnableMark' );
 		if ( $this->enableMark ) {
 			$this->options += [
@@ -66,7 +67,7 @@ class Hooks implements
 		$this->options += [
 			'mediaspoiler-pref-showall' => self::MODE_SHOWALL,
 			'mediaspoiler-pref-hideall' => self::MODE_HIDEALL,
-			'mediaspoiler-pref-notload' => self::MODE_NOTLOAD,
+			'mediaspoiler-pref-noimg' => self::MODE_NOIMG,
 		];
 	}
 
@@ -79,6 +80,16 @@ class Hooks implements
 	 */
 	public function onParserMakeImageParams( $title, $file, &$params, $parser ) {
 		if ( !$this->enableMark ) {
+			return;
+		}
+
+		// @phan-suppress-next-line PhanImpossibleCondition
+		$hasVisibleCaption = isset( $params['frame']['framed'] )
+			// @phan-suppress-next-line PhanImpossibleCondition
+			|| isset( $params['frame']['thumbnail'] )
+			// @phan-suppress-next-line PhanImpossibleCondition
+			|| isset( $params['frame']['manualthumb'] );
+		if ( !$hasVisibleCaption ) {
 			return;
 		}
 
@@ -100,98 +111,144 @@ class Hooks implements
 	 */
 	public function onParserModifyImageHTML( Parser $parser, File $file,
 		array $params, string &$html ): void {
-		$mode = $parser->getOptions()->getOption( 'mediaspoiler' );
-		$doc = DOMUtils::parseHTML( $html );
-
-		if ( $this->enableLegacyMediaDOM ) {
-			// TODO: legacy media DOM support
-		} else {
-			$figure = $doc->getElementsByTagName( 'figure' )->item( 0 );
-			if ( !$figure ) {
-				return;
-			}
-
-			$type = $figure->getAttribute( 'typeof' );
-			if ( $type !== 'mw:File/Frame' && $type !== 'mw:File/Thumb' ) {
-				return;
-			}
-
-			$classes = preg_split( '/\s+/', $figure->getAttribute( 'class' ), -1, PREG_SPLIT_NO_EMPTY );
-			if ( $mode === self::MODE_NOTLOAD ) {
-				$width = $figure->firstElementChild->firstElementChild->getAttribute( 'width' );
-				$figure->removeChild( $figure->firstElementChild );
-
-				$a = $doc->createElement( 'a' );
-				$a->setAttribute( 'href', $file->getDescriptionUrl() );
-				$a->setAttribute( 'title', $file->getTitle()->getPrefixedText() );
-				$span = $doc->createElement( 'span', $file->getTitle()->getPrefixedText() );
-				$span->setAttribute( 'class', 'mw-file-element' );
-				$span->setAttribute( 'data-width', $width );
-				$a->appendChild( $span );
-				$figure->insertBefore( $a, $figure->firstElementChild );
-
-				$html = $doc->saveHTML( $figure );
-				$parser->getOutput()->addModuleStyles( [ 'ext.mediaSpoiler.noimg.style' ] );
-				return;
-			} elseif ( $this->enableMark && in_array( 'spoiler', $classes ) && $mode === self::MODE_SHOWALL ) {
-				// skip for audio files
-				if ( !$figure->firstElementChild->firstElementChild->hasAttribute( 'height' ) ) {
-					return;
-				}
-
-				$figure->setAttribute( 'class', $figure->getAttribute( 'class' ) . ' nospoiler' );
-				$html = $doc->saveHTML( $figure );
-				return;
-			} elseif ( ( $this->enableMark && in_array( 'spoiler', $classes ) ) || $mode === self::MODE_HIDEALL ) {
-				$a = $figure->firstElementChild;
-
-				// skip for audio files
-				if ( !$a->firstElementChild->hasAttribute( 'height' ) ) {
-					return;
-				}
-
-				// add 'spoiler' class to all media when $mode === self::MODE_HIDEALL
-				if ( !in_array( 'spoiler', $classes ) ) {
-					$figure->setAttribute( 'class', $figure->getAttribute( 'class' ) . ' spoiler' );
-				}
-
-				if ( $a->tagName === 'a' ) {
-					$a->removeAttribute( 'href' );
-					$a->setAttribute( 'role', 'link' );
-					$a->setAttribute( 'aria-disabled', 'true' );
-				}
-
-				$media = $a->firstElementChild;
-				if ( $media->tagName === 'video' ) {
-					$media->removeAttribute( 'controls' );
-				}
-
-				$out = $parser->getOutput();
-				OutputPage::setupOOUI();
-				$out->setEnableOOUI( true );
-				$out->addModuleStyles( [ 'ext.mediaSpoiler.style', 'oojs-ui.styles.icons-accessibility' ] );
-				$out->addModules( [ 'ext.mediaSpoiler' ] );
-
-				$button = new \OOUI\ButtonWidget( [
-					'infusable' => true,
-					'label' => $parser->msg( 'mediaspoiler-viewmedia' )->text(),
-					'href' => $file->getDescriptionUrl(),
-					'icon' => 'eye',
-					'flags' => [ 'primary', 'progressive' ],
-					'classes' => [ 'spoiler-button' ],
-				] );
-
-				$coverElement = $doc->importNode(
-					DOMUtils::parseHTML( '<div class="spoiler-cover">' . $button->toString() . '</div>' )
-						->getElementsByTagName( 'div' )->item( 0 ),
-					true
-				);
-				$buttonElement = $coverElement->getElementsByTagName( 'span' )->item( 0 );
-				$figure->appendChild( $coverElement );
-
-				$html = $doc->saveHTML( $figure );
-			}
+		if ( !$file || !$file->exists() ) {
+			return;
 		}
+
+		$mode = $parser->getOptions()->getOption( 'mediaspoiler' );
+		if ( $mode !== self::MODE_NOIMG ) {
+			return;
+		}
+
+		$enableLegacyMediaDOM = MediaWikiServices::getInstance()
+			->getMainConfig()
+			->get( MainConfigNames::ParserEnableLegacyMediaDOM );
+		if ( $enableLegacyMediaDOM ) {
+			throw new ConfigException( 'MediaSpoiler requires $wgParserEnableLegacyMediaDOM to be false' );
+		}
+
+		// @phan-suppress-next-line PhanImpossibleCondition
+		$hasVisibleCaption = isset( $params['frame']['framed'] )
+			// @phan-suppress-next-line PhanImpossibleCondition
+			|| isset( $params['frame']['thumbnail'] )
+			// @phan-suppress-next-line PhanImpossibleCondition
+			|| isset( $params['frame']['manualthumb'] );
+		$mediaType = $file->getMediaType();
+		if ( !$hasVisibleCaption ) {
+			// Skip for images without visible captions
+			if ( $mediaType === MEDIATYPE_BITMAP || $mediaType === MEDIATYPE_DRAWING ) {
+				return;
+			}
+			$selector = "[typeof~='mw:File']";
+		} else {
+			$selector = "figure[typeof~='mw:File/Thumb'], figure[typeof~='mw:File/Frame']";
+		}
+		$doc = DOMUtils::parseHTML( $html );
+		$figure = DOMCompat::querySelector( $doc, $selector );
+		if ( !$figure ) {
+			return;
+		}
+
+		$title = $file->getTitle();
+		$link = Linker::link(
+			$title,
+			Html::element( 'span', [
+				'class' => 'mw-file-element mw-broken-media',
+				'data-width' => $params['handler']['width'] ?? null,
+				'data-height' => $params['handler']['height'] ?? null,
+			], $title->getPrefixedText() ),
+			[],
+			[],
+			[ 'known', 'noclasses' ]
+		);
+		$linkElement = $doc->importNode( DOMCompat::querySelector( DOMUtils::parseHTML( $link ), 'a' ), true );
+		$figure->removeChild( $figure->firstElementChild );
+		$figure->insertBefore( $linkElement, $figure->firstElementChild );
+		$html = $doc->saveHTML( $figure );
+	}
+
+	/**
+	 * @param OutputPage $out
+	 * @param string &$text
+	 * @return void
+	 */
+	public function onOutputPageBeforeHTML( $out, &$text ) {
+		$mode = $this->userOptionsLookup->getOption( $out->getUser(), 'mediaspoiler' );
+
+		if ( $mode === self::MODE_HIDEALL ) {
+			$selector = "figure[typeof~='mw:File/Thumb'], figure[typeof~='mw:File/Frame']";
+		} elseif ( $this->enableMark && $mode === self::MODE_HIDEMARKED ) {
+			$selector = "figure.spoiler[typeof~='mw:File/Thumb'], figure.spoiler[typeof~='mw:File/Frame']";
+		} else {
+			return;
+		}
+
+		$enableLegacyMediaDOM = MediaWikiServices::getInstance()
+			->getMainConfig()
+			->get( MainConfigNames::ParserEnableLegacyMediaDOM );
+		if ( $enableLegacyMediaDOM ) {
+			throw new ConfigException( 'MediaSpoiler requires $wgParserEnableLegacyMediaDOM to be false' );
+		}
+
+		$doc = DOMUtils::parseHTML( $text );
+		$figures = DOMCompat::querySelectorAll( $doc, $selector );
+		if ( count( $figures ) === 0 ) {
+			return;
+		}
+		foreach ( $figures as $figure ) {
+			$classes = DOMCompat::getClassList( $figure );
+			$a = $figure->firstElementChild;
+
+			// Skip for audio files
+			if ( !$a->firstElementChild->hasAttribute( 'height' ) ) {
+				continue;
+			}
+
+			// Add 'spoiler' class to all media when $mode === self::MODE_HIDEALL
+			if ( !$classes->contains( 'spoiler' ) ) {
+				$classes->add( 'spoiler' );
+			}
+
+			$href = '';
+			if ( $a->tagName === 'a' ) {
+				$href = $a->getAttribute( 'href' );
+				$a->removeAttribute( 'href' );
+				$a->setAttribute( 'role', 'link' );
+				$a->setAttribute( 'aria-disabled', 'true' );
+			}
+
+			$media = $a->firstElementChild;
+			if ( $media->tagName === 'video' ) {
+				$media->removeAttribute( 'controls' );
+			}
+
+			if ( !$href ) {
+				$href = Title::makeTitle( NS_FILE, $media->getAttribute( 'data-mwtitle' ) )->getLinkURL();
+			}
+
+			$out->enableOOUI();
+			$out->addModuleStyles( [ 'ext.mediaSpoiler.style', 'oojs-ui.styles.icons-accessibility' ] );
+			$out->addModules( [ 'ext.mediaSpoiler' ] );
+
+			$button = new \OOUI\ButtonWidget( [
+				'infusable' => true,
+				'label' => $out->msg( 'mediaspoiler-viewmedia' )->text(),
+				'href' => $href,
+				'icon' => 'eye',
+				'flags' => [ 'primary', 'progressive' ],
+				'classes' => [ 'spoiler-button' ],
+			] );
+
+			$coverElement = $doc->importNode(
+				DOMUtils::parseHTML( '<div class="spoiler-cover">' . $button->toString() . '</div>' )
+					->getElementsByTagName( 'div' )->item( 0 ),
+				true
+			);
+			$buttonElement = $coverElement->getElementsByTagName( 'span' )->item( 0 );
+			$figure->appendChild( $coverElement );
+		}
+
+		$text = $doc->saveHTML();
 	}
 
 	/**
@@ -201,14 +258,12 @@ class Hooks implements
 	 * @return void
 	 */
 	public function onParserOptionsRegister( &$defaults, &$inCacheKey, &$lazyLoad ) {
-		$defaults['mediaspoiler'] = $this->userOptionsLookup->getDefaultOption( 'mediaspoiler' );
+		$mode = $this->userOptionsLookup->getDefaultOption( 'mediaspoiler' );
+		$defaults['mediaspoiler'] = $mode === self::MODE_NOIMG ? self::MODE_NOIMG : null;
 		$inCacheKey['mediaspoiler'] = true;
 		$lazyLoad['mediaspoiler'] = function ( ParserOptions $options ) {
 			$mode = $this->userOptionsLookup->getOption( $options->getUserIdentity(), 'mediaspoiler' );
-			if ( !in_array( $mode, $this->options, true ) ) {
-				$mode = $this->enableMark ? self::MODE_HIDEMARKED : self::MODE_SHOWALL;
-			}
-			return $mode;
+			return $mode === self::MODE_NOIMG ? self::MODE_NOIMG : null;
 		};
 	}
 

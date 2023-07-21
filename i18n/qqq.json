@@ -11,5 +11,5 @@
 	"mediaspoiler-pref-hidemarked": "Option for users who want to hide media marked as sensitive.",
 	"mediaspoiler-pref-showall": "Option for users who want to show all media.",
 	"mediaspoiler-pref-hideall": "Option for users who want to hide all media.",
-	"mediaspoiler-pref-notload": "Option for users who want to show links to media description pages only."
+	"mediaspoiler-pref-noimg": "Option for users who want to show links to media description pages only."
 }

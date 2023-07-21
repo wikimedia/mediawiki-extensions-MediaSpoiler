@@ -11,5 +11,5 @@
 	"mediaspoiler-pref-hidemarked": "Hide media marked as sensitive",
 	"mediaspoiler-pref-showall": "Show all media",
 	"mediaspoiler-pref-hideall": "Hide all media",
-	"mediaspoiler-pref-notload": "Don't load media, show links to media description pages only"
+	"mediaspoiler-pref-noimg": "Don't load media, show links to media description pages only"
 }
