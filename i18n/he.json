@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"mediaspoiler-desc": "הסתרת מדיה שעלולה לגרום לקוראים אי־נוחות",
+	"mediaspoiler-viewmedia": "הצגת המדיה",
+	"mediaspoiler-pref-label": "תצוגת מדיה",
+	"mediaspoiler-pref-help": "האפשרות הזאת משפיעה רק על מדיה ממוסגרת. מדיה אחרת אינה מושפעת.",
+	"mediaspoiler-pref-hidemarked": "הסתרת מדיה שסומנה כרגישה",
+	"mediaspoiler-pref-showall": "הצגת כל המדיה",
+	"mediaspoiler-pref-hideall": "הסתרת כל המדיה",
+	"mediaspoiler-pref-noimg": "לא לטעון מדיה, להציג קישורים לדפי תיאור מדיה בלבד"
+}

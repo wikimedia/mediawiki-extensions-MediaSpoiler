@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"mediaspoiler-desc": "Obscurar multimedia que pote esser disagradabile al lectores",
+	"mediaspoiler-viewmedia": "Vider multimedia",
+	"mediaspoiler-pref-label": "Presentation de multimedia",
+	"mediaspoiler-pref-help": "Iste option affecta solmente le multimedia inquadrate. Altere multimedia non es affectate.",
+	"mediaspoiler-pref-hidemarked": "Celar multimedia marcate como sensibile",
+	"mediaspoiler-pref-showall": "Monstrar tote le multimedia",
+	"mediaspoiler-pref-hideall": "Celar tote le multimedia",
+	"mediaspoiler-pref-noimg": "Non cargar multimedia, monstrar solmente ligamines al paginas de description del multimedia"
+}

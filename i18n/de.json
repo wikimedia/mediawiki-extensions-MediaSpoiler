@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Brettchenweber"
+		]
+	},
+	"mediaspoiler-desc": "Blendet Medien aus, die den Lesern Unbehagen bereiten könnten",
+	"mediaspoiler-viewmedia": "Medien ansehen",
+	"mediaspoiler-pref-label": "Medienanzeige",
+	"mediaspoiler-pref-help": "Diese Option betrifft nur Medien im Rahmen. Andere Medien sind davon nicht betroffen.",
+	"mediaspoiler-pref-hidemarked": "Als sensibel markierte Medien ausblenden",
+	"mediaspoiler-pref-showall": "Alle Medien anzeigen",
+	"mediaspoiler-pref-hideall": "Alle Medien ausblenden",
+	"mediaspoiler-pref-noimg": "Keine Medien laden, sondern nur Links zu Medienbeschreibungsseiten anzeigen"
+}

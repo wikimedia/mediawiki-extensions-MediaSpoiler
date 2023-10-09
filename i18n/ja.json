@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Omotecho"
+		]
+	},
+	"mediaspoiler-desc": "読者を不快にさせる可能性のあるメディアを非表示にする",
+	"mediaspoiler-pref-label": "メディアの表示",
+	"mediaspoiler-pref-help": "この選択肢の影響はフレーム付きメディアに限定されます。他のメディアには波及しません。",
+	"mediaspoiler-pref-showall": "メディア全点を表示",
+	"mediaspoiler-pref-noimg": "メディアを読み込まないまま、メディアの説明ページのリンクのみ表示"
+}

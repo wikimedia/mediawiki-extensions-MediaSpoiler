@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"mediaspoiler-desc": "Skritje predstavnostnih vsebin, zaradi katerih se lahko bralci počutijo neprijetno",
+	"mediaspoiler-viewmedia": "Prikaži predstavnost",
+	"mediaspoiler-pref-label": "Prikaz predstavnosti",
+	"mediaspoiler-pref-help": "Ta možnost vpliva samo na predstavnosti v okvirju. Na druge predstavnosti ne vpliva.",
+	"mediaspoiler-pref-hidemarked": "Skrij predstavnosti, označene kot občutljive",
+	"mediaspoiler-pref-showall": "Prikaži vse predstavnosti",
+	"mediaspoiler-pref-hideall": "Skrij vse predstavnosti",
+	"mediaspoiler-pref-noimg": "Ne nalagaj predstavnosti, prikaži samo povezave do strani z opisom predstavnosti"
+}

@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"আফতাবুজ্জামান"
+		]
+	},
+	"mediaspoiler-desc": "পাঠকদের অস্বস্তিতে ফেলতে পারে এমন মিডিয়া লুকায়",
+	"mediaspoiler-viewmedia": "মিডিয়া দেখুন",
+	"mediaspoiler-pref-label": "মিডিয়া প্রদর্শন",
+	"mediaspoiler-pref-help": "এই বিকল্পটি শুধু ফ্রেমযুক্ত মিডিয়াকে প্রভাবিত করে। অন্যান্য মিডিয়া প্রভাবিত হয় না।",
+	"mediaspoiler-pref-hidemarked": "সংবেদনশীল হিসেবে চিহ্নিত করা মিডিয়া লুকান",
+	"mediaspoiler-pref-showall": "সমস্ত মিডিয়া দেখান",
+	"mediaspoiler-pref-hideall": "সমস্ত মিডিয়া লুকান",
+	"mediaspoiler-pref-noimg": "মিডিয়া লোড করবেন না, শুধু মিডিয়ার বিবরণ পাতার লিঙ্ক দেখান।"
+}
