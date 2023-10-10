@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ukhant Erdemt"
+		]
+	},
+	"mediaspoiler-desc": "Умшачнриг эвго бәәдлд орулх болш уга кевлл-медәллин кергслиг нуутн.",
+	"mediaspoiler-viewmedia": "Медиа үзх",
+	"mediaspoiler-pref-label": "Медиа делгц",
+	"mediaspoiler-pref-help": "Эн суңһврнь зөвкн күрәтә медиафайлыг хамарна. Талдан кевлл-медәллин кергслд нөлә уга.",
+	"mediaspoiler-pref-hidemarked": "Нууц гиҗ темдглсн медиаг нуух",
+	"mediaspoiler-pref-showall": "Хамг медиаг үзүлх",
+	"mediaspoiler-pref-hideall": "Хамг медиаг нуух",
+	"mediaspoiler-pref-noimg": "Медиа бичә орул, зөвкн медиа тәәлврин халхин холвасиг үзүл."
+}
