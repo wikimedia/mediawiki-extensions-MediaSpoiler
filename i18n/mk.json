@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"mediaspoiler-desc": "Скриј ги податотеките што им прават непријатно чувство на читателите",
+	"mediaspoiler-viewmedia": "Погл. податотека",
+	"mediaspoiler-pref-label": "Приказ на податотека",
+	"mediaspoiler-pref-help": "Оваа можност се однесува само на врамените податотеки. Другите ќе бидат незасегнати.",
+	"mediaspoiler-pref-hidemarked": "Скриј ги податотеките означени како чувствителни",
+	"mediaspoiler-pref-showall": "Прикажи ги сите податотеки",
+	"mediaspoiler-pref-hideall": "Скриј ги сите податотеки",
+	"mediaspoiler-pref-noimg": "Не ги вчитувај податотеките, прикажи ги само врските до нивните описни страници"
+}
