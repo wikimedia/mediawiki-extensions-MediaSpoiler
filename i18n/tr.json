@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hedda"
+		]
+	},
+	"mediaspoiler-desc": "Okuyucuları rahatsız edebilecek medyayı gizleyin",
+	"mediaspoiler-viewmedia": "Medyayı görüntüle",
+	"mediaspoiler-pref-label": "Medya ekranı",
+	"mediaspoiler-pref-help": "Bu seçenek yalnızca çerçeveli ortamı etkiler. Diğer ortamlar etkilenmez.",
+	"mediaspoiler-pref-hidemarked": "Hassas olarak işaretlenen medyayı gizle",
+	"mediaspoiler-pref-showall": "Tüm medyayı göster",
+	"mediaspoiler-pref-hideall": "Tüm medyayı gizle",
+	"mediaspoiler-pref-noimg": "Medya yüklemeyin, yalnızca medya açıklama sayfalarına olan bağlantıları gösterin"
+}
