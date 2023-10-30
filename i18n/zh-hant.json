@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kly"
+		]
+	},
+	"mediaspoiler-desc": "隱藏可能讓讀者不快的媒體內容",
+	"mediaspoiler-viewmedia": "檢視媒體",
+	"mediaspoiler-pref-label": "媒體展示",
+	"mediaspoiler-pref-help": "此選項僅會影響畫面媒體。其他媒體不受影響。",
+	"mediaspoiler-pref-hidemarked": "隱藏被標記為敏感內容的媒體",
+	"mediaspoiler-pref-showall": "顯示所有媒體",
+	"mediaspoiler-pref-hideall": "隱藏所有媒體",
+	"mediaspoiler-pref-noimg": "不要載入媒體，僅顯示媒體描述頁面的連結"
+}
