@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"mediaspoiler-desc": "Verberg media die lezers een ongemakkelijk gevoel kunnen geven",
+	"mediaspoiler-viewmedia": "Media bekijken",
+	"mediaspoiler-pref-label": "Mediaweergave",
+	"mediaspoiler-pref-help": "Deze optie is alleen van invloed op ingekaderde media. Andere media worden niet beïnvloed.",
+	"mediaspoiler-pref-hidemarked": "Als gevoelig gemarkeerde media verbergen",
+	"mediaspoiler-pref-showall": "Alle media weergeven",
+	"mediaspoiler-pref-hideall": "Alle media verbergen",
+	"mediaspoiler-pref-noimg": "Geen media laden, alleen koppelingen naar mediabeschrijvingspagina’s tonen"
+}
