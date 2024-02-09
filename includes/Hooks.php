@@ -16,6 +16,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Hook\UserGetDefaultOptionsHook;
+use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
 use OutputPage;
 use Parser;
@@ -83,11 +84,8 @@ class Hooks implements
 			return;
 		}
 
-		// @phan-suppress-next-line PhanImpossibleCondition
 		$hasVisibleCaption = isset( $params['frame']['framed'] )
-			// @phan-suppress-next-line PhanImpossibleCondition
 			|| isset( $params['frame']['thumbnail'] )
-			// @phan-suppress-next-line PhanImpossibleCondition
 			|| isset( $params['frame']['manualthumb'] );
 		if ( !$hasVisibleCaption ) {
 			return;
@@ -111,7 +109,7 @@ class Hooks implements
 	 */
 	public function onParserModifyImageHTML( Parser $parser, File $file,
 		array $params, string &$html ): void {
-		if ( !$file || !$file->exists() ) {
+		if ( !$file->exists() ) {
 			return;
 		}
 
@@ -127,11 +125,8 @@ class Hooks implements
 			throw new ConfigException( 'MediaSpoiler requires $wgParserEnableLegacyMediaDOM to be false' );
 		}
 
-		// @phan-suppress-next-line PhanImpossibleCondition
 		$hasVisibleCaption = isset( $params['frame']['framed'] )
-			// @phan-suppress-next-line PhanImpossibleCondition
 			|| isset( $params['frame']['thumbnail'] )
-			// @phan-suppress-next-line PhanImpossibleCondition
 			|| isset( $params['frame']['manualthumb'] );
 		$mediaType = $file->getMediaType();
 		if ( !$hasVisibleCaption ) {
@@ -162,8 +157,8 @@ class Hooks implements
 			[ 'known', 'noclasses' ]
 		);
 		$linkElement = $doc->importNode( DOMCompat::querySelector( DOMUtils::parseHTML( $link ), 'a' ), true );
-		$figure->removeChild( $figure->firstElementChild );
-		$figure->insertBefore( $linkElement, $figure->firstElementChild );
+		$figure->removeChild( $figure->firstChild );
+		$figure->insertBefore( $linkElement, $figure->firstChild );
 		$html = $doc->saveHTML( $figure );
 	}
 
@@ -192,19 +187,23 @@ class Hooks implements
 
 		$doc = DOMUtils::parseHTML( $text );
 		$figures = DOMCompat::querySelectorAll( $doc, $selector );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentInternal
 		if ( count( $figures ) === 0 ) {
 			return;
 		}
 		foreach ( $figures as $figure ) {
-			$classes = DOMCompat::getClassList( $figure );
-			$a = $figure->firstElementChild;
+			$a = $figure->firstChild;
+			'@phan-var \DOMElement $a';
 
 			// Skip for audio files
-			if ( !$a->firstElementChild->hasAttribute( 'height' ) ) {
+			$img = $a->firstChild;
+			'@phan-var \DOMElement $img';
+			if ( !$img->hasAttribute( 'height' ) ) {
 				continue;
 			}
 
 			// Add 'spoiler' class to all media when $mode === self::MODE_HIDEALL
+			$classes = DOMCompat::getClassList( $figure );
 			if ( !$classes->contains( 'spoiler' ) ) {
 				$classes->add( 'spoiler' );
 			}
@@ -217,7 +216,8 @@ class Hooks implements
 				$a->setAttribute( 'aria-disabled', 'true' );
 			}
 
-			$media = $a->firstElementChild;
+			$media = $a->firstChild;
+			'@phan-var \DOMElement $media';
 			if ( $media->tagName === 'video' ) {
 				$media->removeAttribute( 'controls' );
 			}
@@ -240,11 +240,10 @@ class Hooks implements
 			] );
 
 			$coverElement = $doc->importNode(
-				DOMUtils::parseHTML( '<div class="spoiler-cover">' . $button->toString() . '</div>' )
-					->getElementsByTagName( 'div' )->item( 0 ),
+				DOMUtils::parseHTML( Html::rawElement( 'div', [ 'class' => 'spoiler-cover' ], $button->toString() ) )
+					->firstChild,
 				true
 			);
-			$buttonElement = $coverElement->getElementsByTagName( 'span' )->item( 0 );
 			$figure->appendChild( $coverElement );
 		}
 
