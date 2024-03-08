@@ -187,15 +187,16 @@ class Hooks implements
 
 		$doc = DOMUtils::parseHTML( $text );
 		$figures = DOMCompat::querySelectorAll( $doc, $selector );
-		// @phan-suppress-next-line PhanTypeMismatchArgumentInternal
 		if ( count( $figures ) === 0 ) {
 			return;
 		}
 		foreach ( $figures as $figure ) {
+			/** @var $a \DOMElement */
 			$a = $figure->firstChild;
 			'@phan-var \DOMElement $a';
 
 			// Skip for audio files
+			/** @var $img \DOMElement */
 			$img = $a->firstChild;
 			'@phan-var \DOMElement $img';
 			if ( !$img->hasAttribute( 'height' ) ) {
