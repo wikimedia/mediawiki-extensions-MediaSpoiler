@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"McDutchie"
+			"McDutchie",
+			"Siebrand"
 		]
 	},
 	"mediaspoiler-desc": "Verberg media die lezers een ongemakkelijk gevoel kunnen geven",
@@ -11,5 +12,5 @@
 	"mediaspoiler-pref-hidemarked": "Als gevoelig gemarkeerde media verbergen",
 	"mediaspoiler-pref-showall": "Alle media weergeven",
 	"mediaspoiler-pref-hideall": "Alle media verbergen",
-	"mediaspoiler-pref-noimg": "Geen media laden, alleen koppelingen naar mediabeschrijvingspagina’s tonen"
+	"mediaspoiler-pref-noimg": "Geen media laden, alleen koppelingen naar mediabeschrijvingspagina’s weergeven"
 }
