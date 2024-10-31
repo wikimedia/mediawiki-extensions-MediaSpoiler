@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"沈澄心"
+		]
+	},
+	"mediaspoiler-desc": "隐藏可能使读者不快的媒体内容",
+	"mediaspoiler-viewmedia": "查看媒体",
+	"mediaspoiler-pref-label": "媒体展示",
+	"mediaspoiler-pref-hidemarked": "隐藏标记为敏感的媒体",
+	"mediaspoiler-pref-showall": "显示所有媒体",
+	"mediaspoiler-pref-hideall": "隐藏所有媒体",
+	"mediaspoiler-pref-noimg": "不加载媒体，仅显示媒体描述页面的链接"
+}
