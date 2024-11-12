@@ -1,8 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"U.T."
+			"U.T.",
+			"Mahabarata"
 		]
 	},
-	"mediaspoiler-pref-hideall": "Masquer tous les médias"
+	"mediaspoiler-desc": "Masquer les médias qui pourraient mettre les lecteurs mal à l'aise",
+	"mediaspoiler-viewmedia": "Voir les médias",
+	"mediaspoiler-pref-label": "Visualisation des médias",
+	"mediaspoiler-pref-help": "Cette option ne concerne que les médias type image ou vidéo. Les autres médias ne sont pas concernés.",
+	"mediaspoiler-pref-hidemarked": "Masquer les médias marqués comme sensibles",
+	"mediaspoiler-pref-showall": "Afficher tous les médias",
+	"mediaspoiler-pref-hideall": "Masquer tous les médias",
+	"mediaspoiler-pref-noimg": "Ne pas charger les médias mais inclure uniquement des liens vers des pages de description de ces médias"
 }
