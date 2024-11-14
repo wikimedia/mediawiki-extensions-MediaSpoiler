@@ -1,13 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"沈澄心"
+			"沈澄心",
+			"Mahabarata"
 		]
 	},
 	"mediaspoiler-desc": "{{desc|name=MediaSpoiler|url=https://www.mediawiki.org/wiki/Extension:MediaSpoiler}}",
 	"mediaspoiler-viewmedia": "Label for \"View media\" button.",
 	"mediaspoiler-pref-label": "Label for media display option.",
-	"mediaspoiler-pref-help": "Help message for media display option.",
+	"mediaspoiler-pref-help": "Help message for media display option.\n\nSee [https://www.mediawiki.org/wiki/Extension:MediaSpoiler MediaSpoiler] for more information",
 	"mediaspoiler-pref-hidemarked": "Option for users who want to hide media marked as sensitive.",
 	"mediaspoiler-pref-showall": "Option for users who want to show all media.",
 	"mediaspoiler-pref-hideall": "Option for users who want to hide all media.",
