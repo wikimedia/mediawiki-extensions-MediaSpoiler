@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Meno25"
+		]
+	},
+	"mediaspoiler-desc": "إخفاء الوسائط التي قد تسبب عدم الارتياح للقراء",
+	"mediaspoiler-viewmedia": "عرض الوسائط",
+	"mediaspoiler-pref-label": "عرض الوسائط",
+	"mediaspoiler-pref-help": "يؤثر هذا الخيار فقط على الوسائط المؤطرة، ولا يتأثر بالوسائط الأخرى.",
+	"mediaspoiler-pref-hidemarked": "إخفاء الوسائط التي تم وضع علامة عليها على أنها حساسة",
+	"mediaspoiler-pref-showall": "عرض كافة الوسائط",
+	"mediaspoiler-pref-hideall": "إخفاء كافة الوسائط",
+	"mediaspoiler-pref-noimg": "لا تقم بتحميل الوسائط، اعرض الروابط إلى صفحات وصف الوسائط فقط"
+}
