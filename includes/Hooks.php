@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\MediaSpoiler;
 
-use ConfigException;
 use File;
 use MediaWiki\Hook\OutputPageBeforeHTMLHook;
 use MediaWiki\Hook\ParserMakeImageParamsHook;
@@ -11,7 +10,6 @@ use MediaWiki\Hook\ParserOptionsRegisterHook;
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Title\Title;
@@ -118,13 +116,6 @@ class Hooks implements
 			return;
 		}
 
-		$enableLegacyMediaDOM = MediaWikiServices::getInstance()
-			->getMainConfig()
-			->get( MainConfigNames::ParserEnableLegacyMediaDOM );
-		if ( $enableLegacyMediaDOM ) {
-			throw new ConfigException( 'MediaSpoiler requires $wgParserEnableLegacyMediaDOM to be false' );
-		}
-
 		$hasVisibleCaption = isset( $params['frame']['framed'] )
 			|| isset( $params['frame']['thumbnail'] )
 			|| isset( $params['frame']['manualthumb'] );
@@ -156,7 +147,11 @@ class Hooks implements
 			[],
 			[ 'known', 'noclasses' ]
 		);
-		$linkElement = $doc->importNode( DOMCompat::querySelector( DOMUtils::parseHTML( $link ), 'a' ), true );
+
+		$linkElement = DOMCompat::querySelector(
+			DOMUtils::parseHTMLToFragment( $doc, $link ), 'a'
+		);
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullableInternal firstChild is assumed in media structure
 		$figure->removeChild( $figure->firstChild );
 		$figure->insertBefore( $linkElement, $figure->firstChild );
 		$html = $doc->saveHTML( $figure );
@@ -176,13 +171,6 @@ class Hooks implements
 			$selector = "figure.spoiler[typeof~='mw:File/Thumb'], figure.spoiler[typeof~='mw:File/Frame']";
 		} else {
 			return;
-		}
-
-		$enableLegacyMediaDOM = MediaWikiServices::getInstance()
-			->getMainConfig()
-			->get( MainConfigNames::ParserEnableLegacyMediaDOM );
-		if ( $enableLegacyMediaDOM ) {
-			throw new ConfigException( 'MediaSpoiler requires $wgParserEnableLegacyMediaDOM to be false' );
 		}
 
 		$doc = DOMUtils::parseHTML( $text );
@@ -240,11 +228,11 @@ class Hooks implements
 				'classes' => [ 'spoiler-button' ],
 			] );
 
-			$coverElement = $doc->importNode(
-				DOMUtils::parseHTML( Html::rawElement( 'div', [ 'class' => 'spoiler-cover' ], $button->toString() ) )
-					->firstChild,
-				true
-			);
+			$coverElement = DOMUtils::parseHTMLToFragment(
+				$doc,
+				Html::rawElement( 'div', [ 'class' => 'spoiler-cover' ], $button->toString() )
+			)->firstChild;
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullableInternal firstChild is div
 			$figure->appendChild( $coverElement );
 		}
 
