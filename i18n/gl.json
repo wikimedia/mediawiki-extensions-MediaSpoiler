@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"mediaspoiler-desc": "Ocultar contido multimedia que poida incomodar aos lectores",
+	"mediaspoiler-viewmedia": "Ver o contido multimedia",
+	"mediaspoiler-pref-label": "Visualización de contido multimedia",
+	"mediaspoiler-pref-help": "Esta opción só afecta aos contidos multimedia enmarcados. Os demais contidos multimedia non se verán afectados.",
+	"mediaspoiler-pref-hidemarked": "Ocultar o contido multimedia marcado como sensible",
+	"mediaspoiler-pref-showall": "Mostrar todo o contido multimedia",
+	"mediaspoiler-pref-hideall": "Ocultar todo o contido multimedia",
+	"mediaspoiler-pref-noimg": "Non cargar o contido multimedia, mostrar só ligazóns ás páxinas de descrición do contido multimedia"
+}
