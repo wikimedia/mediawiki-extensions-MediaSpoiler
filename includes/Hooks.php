@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\MediaSpoiler;
 
-use File;
+use MediaWiki\FileRepo\File\File;
 use MediaWiki\Hook\OutputPageBeforeHTMLHook;
 use MediaWiki\Hook\ParserMakeImageParamsHook;
 use MediaWiki\Hook\ParserModifyImageHTMLHook;
@@ -11,14 +11,14 @@ use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Hook\UserGetDefaultOptionsHook;
 use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
-use OutputPage;
-use Parser;
-use ParserOptions;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 
@@ -198,7 +198,7 @@ class Hooks implements
 			}
 
 			$href = '';
-			if ( $a->tagName === 'a' ) {
+			if ( strtolower( $a->tagName ) === 'a' ) {
 				$href = $a->getAttribute( 'href' );
 				$a->removeAttribute( 'href' );
 				$a->setAttribute( 'role', 'link' );
@@ -207,7 +207,7 @@ class Hooks implements
 
 			$media = $a->firstChild;
 			'@phan-var \DOMElement $media';
-			if ( $media->tagName === 'video' ) {
+			if ( strtolower( $media->tagName ) === 'video' ) {
 				$media->removeAttribute( 'controls' );
 			}
 
