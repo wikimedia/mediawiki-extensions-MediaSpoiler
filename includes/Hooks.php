@@ -228,12 +228,12 @@ class Hooks implements
 				'classes' => [ 'spoiler-button' ],
 			] );
 
-			$coverElement = DOMUtils::parseHTMLToFragment(
+			$fragment = DOMUtils::parseHTMLToFragment(
 				$doc,
 				Html::rawElement( 'div', [ 'class' => 'spoiler-cover' ], $button->toString() )
-			)->firstChild;
+			);
 			// @phan-suppress-next-line PhanTypeMismatchArgumentNullableInternal firstChild is div
-			$figure->appendChild( $coverElement );
+			$figure->appendChild( $fragment->firstChild );
 		}
 
 		$text = $doc->saveHTML();
