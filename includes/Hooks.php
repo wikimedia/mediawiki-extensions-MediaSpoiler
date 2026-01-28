@@ -19,8 +19,8 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\Hook\UserGetDefaultOptionsHook;
 use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
-use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMUtils;
+use Wikimedia\Parsoid\Core\DOMCompat;
+use Wikimedia\Parsoid\Ext\DOMUtils;
 
 class Hooks implements
 	ParserMakeImageParamsHook,
