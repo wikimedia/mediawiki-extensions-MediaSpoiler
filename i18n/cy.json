@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ceirios"
+		]
+	},
+	"mediaspoiler-desc": "Cuddio cyfryngau a allai wneud darllenwyr yn anghyfforddus",
+	"mediaspoiler-viewmedia": "Gweld cyfryngau",
+	"mediaspoiler-pref-label": "Arddangosfa cyfryngau",
+	"mediaspoiler-pref-help": "Mae'r opsiwn hwn yn effeithio ar gyfryngau fframedig yn unig. Nid oes effaith ar gyfryngau eraill.",
+	"mediaspoiler-pref-hidemarked": "Cuddio cyfryngau sydd wedi'u marcio fel rhai sensitif",
+	"mediaspoiler-pref-showall": "Dangos yr holl gyfryngau",
+	"mediaspoiler-pref-hideall": "Cuddio'r holl gyfryngau",
+	"mediaspoiler-pref-noimg": "Peidiwch â llwytho cyfryngau, dim ond dangos dolenni i dudalennau disgrifiad cyfryngau"
+}
