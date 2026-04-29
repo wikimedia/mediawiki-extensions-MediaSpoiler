@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tensama0415"
+		]
+	},
+	"mediaspoiler-viewmedia": "미디어 보기",
+	"mediaspoiler-pref-hidemarked": "민감함으로 표시된 미디어 숨기기",
+	"mediaspoiler-pref-showall": "모든 미디어 표시",
+	"mediaspoiler-pref-hideall": "모든 미디어 숨기기"
+}
