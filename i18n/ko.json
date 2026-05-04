@@ -4,8 +4,12 @@
 			"Tensama0415"
 		]
 	},
+	"mediaspoiler-desc": "독자에게 불쾌감을 줄 수 있는 미디어를 숨깁니다",
 	"mediaspoiler-viewmedia": "미디어 보기",
+	"mediaspoiler-pref-label": "미디어 표시",
+	"mediaspoiler-pref-help": "이 옵션은 프레임된 미디어에만 적용됩니다. 다른 미디어에는 영향을 미치지 않습니다.",
 	"mediaspoiler-pref-hidemarked": "민감함으로 표시된 미디어 숨기기",
 	"mediaspoiler-pref-showall": "모든 미디어 표시",
-	"mediaspoiler-pref-hideall": "모든 미디어 숨기기"
+	"mediaspoiler-pref-hideall": "모든 미디어 숨기기",
+	"mediaspoiler-pref-noimg": "미디어를 로드하지 말고 미디어 설명 문서로의 링크만 표시합니다."
 }
