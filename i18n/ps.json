@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"شاه زمان پټان"
+		]
+	},
+	"mediaspoiler-desc": "هغه رسنۍ پټې کړئ، چې لوستونکي ناخوښه کوي",
+	"mediaspoiler-viewmedia": "رسنۍ کتل",
+	"mediaspoiler-pref-label": "رسنۍ ښکارېدنه",
+	"mediaspoiler-pref-help": "دا خوښنه يوازې چوکاټ شوې رسنۍ اغېزمنوي. نورې رسنۍ نه اغېزمنوي.",
+	"mediaspoiler-pref-hidemarked": "هغه رسنۍ پټې کړئ چې د حساس په توگه په نښه شوې دي",
+	"mediaspoiler-pref-showall": "ټولې رسنۍ ښودل",
+	"mediaspoiler-pref-hideall": "ټولې رسنۍ پټول",
+	"mediaspoiler-pref-noimg": "رسنۍ مه باروئ، يوازې د رسنيو څرگنداوي مخ ته تړوني وښاياست"
+}
