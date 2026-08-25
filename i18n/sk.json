@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wizzard"
+		]
+	},
+	"mediaspoiler-desc": "Skrýva médiá, ktoré môžu byť pre čitateľov nepríjemné",
+	"mediaspoiler-viewmedia": "Zobraziť médium",
+	"mediaspoiler-pref-label": "Zobrazovanie médií",
+	"mediaspoiler-pref-help": "Táto možnosť sa týka len médií v rámčeku. Ostatné médiá neovplyvňuje.",
+	"mediaspoiler-pref-hidemarked": "Skrývať médiá označené ako citlivé",
+	"mediaspoiler-pref-showall": "Zobrazovať všetky médiá",
+	"mediaspoiler-pref-hideall": "Skrývať všetky médiá",
+	"mediaspoiler-pref-noimg": "Nenačítavať médiá, zobrazovať len odkazy na stránky s popisom médií"
+}
